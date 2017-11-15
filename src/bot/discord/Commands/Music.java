@@ -6,7 +6,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeCipherOperation;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -163,21 +162,7 @@ public class Music implements Commands {
                 }
 
                 String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
-                if (input.toLowerCase().startsWith("http://") ||input.toLowerCase().startsWith("https://") || input.toLowerCase().startsWith("www.")) {
-
-                    event.getTextChannel().sendMessage(
-
-                            new EmbedBuilder()
-                                .setColor(Color.YELLOW)
-                                .setTitle("SORRY")
-                                .setDescription("I'm sorry. \nTry to search track by name")
-                                .build()
-                    ).queue();
-                    return;
-                }
-                if (!(input.startsWith("http://") || input.startsWith("https://"))) {
-                    input = "ytsearch: " + input;
-                }
+                input = "ytsearch: " + input;
                 loadTrack(input, event.getMember(), event.getMessage());
 
                 break;

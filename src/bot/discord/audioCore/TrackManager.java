@@ -9,22 +9,23 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private final List<AudioInfo> queue;
-    private int currentTrack = 0;
+    private final Queue<AudioInfo> queue;
 
     public TrackManager(AudioPlayer player) {
+
         this.PLAYER = player;
-        this.queue = new LinkedList<>();
+        this.queue = new LinkedBlockingQueue<>();
+
     }
 
     public void queue(AudioTrack track, Member author) {
         AudioInfo info = new AudioInfo(track, author);
         queue.add(info);
-
         if (PLAYER.getPlayingTrack() == null) {
             PLAYER.playTrack(track);
         }
@@ -35,14 +36,17 @@ public class TrackManager extends AudioEventAdapter {
     }
 
     public AudioInfo getInfo(AudioTrack track) {
+
         return queue.stream()
                 .filter(info -> info.getTrack().equals(track))
                 .findFirst().orElse(null);
     }
 
+
     public void purgeQueue() {
         queue.clear();
     }
+
 
     public void shuffleQueue() {
         List<AudioInfo> cQueue = new ArrayList<>(getQueue());
@@ -56,22 +60,25 @@ public class TrackManager extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        AudioInfo info = queue.get(currentTrack);
+        AudioInfo info = queue.element();
         VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
-
         if (vChan == null)
             player.stopTrack();
         else
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
     }
 
+
     @Override
+
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        if (currentTrack == queue.size() - 1)
-            currentTrack = 0;
+        Guild g = queue.poll().getAuthor().getGuild();
+        if (queue.isEmpty())
+            g.getAudioManager().closeAudioConnection();
         else
-            currentTrack++;
-        player.playTrack(queue.get(currentTrack).getTrack());
+            player.playTrack(queue.element().getTrack());
+
     }
 }
+
 
