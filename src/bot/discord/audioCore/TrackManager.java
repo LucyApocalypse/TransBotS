@@ -42,11 +42,9 @@ public class TrackManager extends AudioEventAdapter {
                 .findFirst().orElse(null);
     }
 
-
     public void purgeQueue() {
         queue.clear();
     }
-
 
     public void shuffleQueue() {
         List<AudioInfo> cQueue = new ArrayList<>(getQueue());
@@ -67,7 +65,6 @@ public class TrackManager extends AudioEventAdapter {
         else
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
     }
-
 
     @Override
 
