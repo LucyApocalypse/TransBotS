@@ -9,6 +9,9 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getMessage().getAuthor().isBot()){
+            return;
+        }
         if(event.getMessage().getContent().startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
             try {
                 Main.handleCommand(Main.parser.parse(event.getMessage().getContent().toLowerCase(), event));
