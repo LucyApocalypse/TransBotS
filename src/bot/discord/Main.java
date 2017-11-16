@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.OnlineStatus;
 import java.util.HashMap;
 
 public class Main {
+    private static Music music = new Music();
     public static JDA jda;
     public static HashMap<String, Commands> commandsHashMap = new HashMap<>();
     static final CommandParser parser = new CommandParser();
@@ -31,9 +32,15 @@ public class Main {
         commandsHashMap.put("ping", new PingCommand());
         commandsHashMap.put("clear", new ClearCommand());
         commandsHashMap.put("dad", new DadBogdanCommand());
+
         commandsHashMap.put("bogdan", commandsHashMap.get("dad"));
-        commandsHashMap.put("m", new Music());
+        commandsHashMap.put("m", music);
     }
+
+    public static Music getMusic() {
+        return music;
+    }
+
     public static void main(String[] args) {
         _init();
     }

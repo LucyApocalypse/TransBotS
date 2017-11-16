@@ -1,6 +1,5 @@
 package bot.discord.audioCore;
 
-import bot.discord.Commands.Music;
 import bot.discord.Main;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -16,7 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private final Queue<AudioInfo> queue;
+    private Queue<AudioInfo> queue;
 
     public TrackManager(AudioPlayer player) {
 
@@ -74,9 +73,11 @@ public class TrackManager extends AudioEventAdapter {
         AudioInfo a = queue.poll();
         Guild g = a.getAuthor().getGuild();
         if(!endReason.equals(AudioTrackEndReason.STOPPED)) {
-            a.getTrack().setPosition(2);
+            a.getTrack().setPosition(0);
             queue.add(a);
             player.playTrack(queue.element().getTrack());
+            Main.getMusic().loadTrack(a.getTrack().getIdentifier(), a.getAuthor());
+
         } else if (queue.isEmpty())
             g.getAudioManager().closeAudioConnection();
         else

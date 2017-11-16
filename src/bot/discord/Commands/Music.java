@@ -13,7 +13,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
@@ -64,7 +63,7 @@ public class Music implements Commands {
         return !hasPlayer(g) || getPlayer(g).getPlayingTrack() == null;
     }
 
-    private void loadTrack(String identifier, Member author, Message msg) {
+    public void loadTrack(String identifier, Member author) {
 
         Guild guild = author.getGuild();
         getPlayer(guild);
@@ -163,7 +162,7 @@ public class Music implements Commands {
 
                 String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
                 input = "ytsearch: " + input;
-                loadTrack(input, event.getMember(), event.getMessage());
+                loadTrack(input, event.getMember());
 
                 break;
 
