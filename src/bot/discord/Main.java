@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class Main {
     public static JDA jda;
-    private static HashMap<String, Commands> commandsHashMap = new HashMap<>();
+    public static HashMap<String, Commands> commandsHashMap = new HashMap<>();
     static final CommandParser parser = new CommandParser();
 
     private static void _init(){
