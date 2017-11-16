@@ -10,10 +10,10 @@ import java.util.HashMap;
 
 public class Main {
     public static JDA jda;
-    public static HashMap<String, Commands> commandsHashMap = new HashMap<>();
-    public static final CommandParser parser = new CommandParser();
+    private static HashMap<String, Commands> commandsHashMap = new HashMap<>();
+    static final CommandParser parser = new CommandParser();
 
-    public static void _init(){
+    private static void _init(){
         JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken("Mzc5OTk4NDExMDA2NTQxODI0.DOyOxg.5UPxViMOw_0PpGzzmzxJeyrnizQ");
         jdaBuilder.setAutoReconnect(true);
@@ -23,11 +23,11 @@ public class Main {
             BotListener botListener = new BotListener();
             jda = jdaBuilder.buildBlocking();
             jda.addEventListener(botListener);
-        } catch (Exception e){
+        } catch (Exception ignored){
 
         }
     }
-    public static void _initCommands(){
+    private static void _initCommands(){
         commandsHashMap.put("ping", new PingCommand());
         commandsHashMap.put("clear", new ClearCommand());
         commandsHashMap.put("dad", new DadBogdanCommand());
@@ -37,7 +37,7 @@ public class Main {
     public static void main(String[] args) {
         _init();
     }
-    public static void handleCommand(CommandParser.CommandContainer cmd) throws InterruptedException {
+    static void handleCommand(CommandParser.CommandContainer cmd) throws InterruptedException {
         _initCommands();
         if(commandsHashMap.containsKey(cmd.invoke)){
             boolean safe = commandsHashMap.get(cmd.invoke).called(cmd.args, cmd.event);
