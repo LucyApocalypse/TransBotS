@@ -3,28 +3,26 @@ package bot.discord.Commands;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CommandParser {
     public CommandContainer parse(String rw, MessageReceivedEvent event){
             ArrayList<String> split  = new ArrayList<>();
-            String raw = rw;
-            String beheaded = rw.replaceFirst("!", "");
+        String beheaded = rw.replaceFirst("!", "");
             String[] splitbeheaded  = beheaded.split(" ");
-            for(String s : splitbeheaded){
-                split.add(s);
-            }
+        split.addAll(Arrays.asList(splitbeheaded));
             String invoke = split.get(0);
             String[] args = new String[split.size() - 1];
             split.subList(1, split.size()).toArray(args);
-            return new CommandContainer(raw, beheaded, splitbeheaded, invoke, args, event);
+            return new CommandContainer(rw, beheaded, splitbeheaded, invoke, args, event);
     }
 
     public class CommandContainer {
-       public final String raw, beheaded, invoke;
-       public final String[] splitbeheaded, args;
+        private final String raw, beheaded, invoke;
+       final String[] splitbeheaded, args;
        public final MessageReceivedEvent event;
 
-        public CommandContainer(String raw, String beheaded,  String[] splitbeheaded, String invoke, String[] args, MessageReceivedEvent event) {
+        CommandContainer(String raw, String beheaded, String[] splitbeheaded, String invoke, String[] args, MessageReceivedEvent event) {
             this.raw = raw;
             this.beheaded = beheaded;
             this.invoke = invoke;
