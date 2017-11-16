@@ -69,7 +69,9 @@ public class TrackManager extends AudioEventAdapter {
     @Override
 
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        Guild g = queue.poll().getAuthor().getGuild();
+        AudioInfo a = queue.poll();
+        Guild g = a.getAuthor().getGuild();
+        queue.add(a);
         if (queue.isEmpty())
             g.getAudioManager().closeAudioConnection();
         else
