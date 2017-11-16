@@ -18,9 +18,9 @@ public class CommandParser {
     }
 
     public class CommandContainer {
-        private final String raw, beheaded, invoke;
-       final String[] splitbeheaded, args;
-       public final MessageReceivedEvent event;
+        public final String raw, beheaded, invoke;
+        public final String[] splitbeheaded, args;
+        public final MessageReceivedEvent event;
 
         CommandContainer(String raw, String beheaded, String[] splitbeheaded, String invoke, String[] args, MessageReceivedEvent event) {
             this.raw = raw;
