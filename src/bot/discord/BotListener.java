@@ -23,10 +23,10 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        String out = "\nThis bot is running on following servers :\n";
+        StringBuilder out = new StringBuilder("\nThis bot is running on following servers :\n");
         int i = 1;
         for(Guild g :  event.getJDA().getGuilds()){
-            out+= i++ + ")\t" + g.getName() + "(" + g.getId() + ") \n";
+            out.append(i++).append(")\t").append(g.getName()).append("(").append(g.getId()).append(") \n");
             g.getTextChannels().get(0).sendMessage("Hello").queue();
         }
         System.out.println(out);
