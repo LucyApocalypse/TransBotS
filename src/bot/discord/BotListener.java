@@ -46,5 +46,6 @@ public class BotListener extends ListenerAdapter {
             System.out.print("*");
         }
         System.out.println();
+
     }
 }
