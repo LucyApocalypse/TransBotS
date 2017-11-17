@@ -13,13 +13,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private Queue<AudioInfo> queue;
+    private final Queue<AudioInfo> queue;
 
     public TrackManager(AudioPlayer player) {
-
         this.PLAYER = player;
         this.queue = new LinkedBlockingQueue<>();
-
     }
 
     public void queue(AudioTrack track, Member author) {
@@ -41,6 +39,7 @@ public class TrackManager extends AudioEventAdapter {
                 .findFirst().orElse(null);
     }
 
+
     public void purgeQueue() {
         queue.clear();
     }
@@ -55,6 +54,7 @@ public class TrackManager extends AudioEventAdapter {
         queue.addAll(cQueue);
     }
 
+
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         AudioInfo info = queue.element();
@@ -66,19 +66,24 @@ public class TrackManager extends AudioEventAdapter {
     }
 
     @Override
-
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         AudioInfo a = queue.poll();
-        Guild g = a.getAuthor().getGuild();
+        Guild g;
 
-        if (queue.isEmpty()) {
+        try {
+            g = a.getAuthor().getGuild();
+        } catch (Exception e){
+            player.destroy();
+            return;
+        }
+        if (queue.isEmpty())
             g.getAudioManager().closeAudioConnection();
-        } else {
+        else
             player.playTrack(queue.element().getTrack());
+        if(!queue.isEmpty() && !(endReason.equals(AudioTrackEndReason.STOPPED))){
+            queue(a.getTrack().makeClone(), a.getAuthor());
         }
-        if(!queue.isEmpty()&& !endReason.equals(AudioTrackEndReason.STOPPED)){
-            queue(a.getTrack(), a.getAuthor());
-        }
+
     }
 }
 

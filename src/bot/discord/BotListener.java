@@ -3,6 +3,7 @@ package bot.discord;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class BotListener extends ListenerAdapter {
@@ -32,5 +33,18 @@ public class BotListener extends ListenerAdapter {
         System.out.println(out);
     }
 
-
+    @Override
+    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
+        for (int i = 0; i < ("Author: " + event.getAuthor().getName() + " (" + event.getAuthor().getId() + ")").length(); i++){
+            System.out.print("*");
+        }
+        System.out.println();
+        System.out.println("Private Message Received:");
+        System.out.println("Author: " + event.getAuthor().getName() + " (" + event.getAuthor().getId() + ")");
+        System.out.println("Message: " + event.getMessage().getContent());
+        for (int i = 0; i < ("Author: " + event.getAuthor().getName() + " (" + event.getAuthor().getId() + ")").length(); i++){
+            System.out.print("*");
+        }
+        System.out.println();
+    }
 }
