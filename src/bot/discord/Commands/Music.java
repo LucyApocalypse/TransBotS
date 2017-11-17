@@ -148,7 +148,14 @@ public class Music implements Commands {
                 try {
                     volume = Integer.parseInt(args[1]);
                 }catch (Exception e){
-                    volume = 100;
+                    event.getTextChannel().sendMessage(
+
+                            new EmbedBuilder().setTitle("**Info**")
+                                    .addField("Volume", "*" + String.valueOf(getPlayer(guild).getVolume()) + "*", false)
+                                    .build()
+
+                    ).queue();
+                    volume = getPlayer(guild).getVolume();
                 }
                 getPlayer(guild).setVolume(volume <= 100 ? volume : 100);
                 break;
@@ -165,7 +172,6 @@ public class Music implements Commands {
                 loadTrack(input, event.getMember());
 
                 break;
-
 
             case "pause":
                 getPlayer(guild).setPaused(true);
@@ -211,6 +217,7 @@ public class Music implements Commands {
                                 .addField("Title", info.title, false)
                                 .addField("Duration", "`[ " + getTimestamp(track.getPosition()) + "/ " + getTimestamp(track.getDuration()) + " ]`", false)
                                 .addField("Author", info.author, false)
+                                .setColor(Color.YELLOW)
                                 .build()
                 ).queue();
 
@@ -219,6 +226,7 @@ public class Music implements Commands {
 
 
             case "queue":
+            case "list":
 
                 if (isIdle(guild)) return;
 
@@ -249,6 +257,16 @@ public class Music implements Commands {
 
 
                 break;
+
+                default:
+                    event.getTextChannel().sendMessage(
+
+                            new EmbedBuilder().setTitle("**HELP**")
+                            .setDescription(help())
+                            .setColor(Color.YELLOW)
+                            .build()
+
+                    ).queue();
         }
 
 

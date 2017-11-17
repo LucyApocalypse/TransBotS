@@ -1,6 +1,4 @@
 package bot.discord.audioCore;
-
-import bot.discord.Main;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -72,12 +70,15 @@ public class TrackManager extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         AudioInfo a = queue.poll();
         Guild g = a.getAuthor().getGuild();
-        if (queue.isEmpty())
+
+        if (queue.isEmpty()) {
             g.getAudioManager().closeAudioConnection();
-        else
+        } else {
             player.playTrack(queue.element().getTrack());
-
-
+        }
+        if(!queue.isEmpty()&& !endReason.equals(AudioTrackEndReason.STOPPED)){
+            queue(a.getTrack(), a.getAuthor());
+        }
     }
 }
 
