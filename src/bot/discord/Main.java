@@ -39,6 +39,7 @@ public class Main {
         commandsHashMap.put("v", commandsHashMap.get("vote"));
         commandsHashMap.put("m", new Music());
         commandsHashMap.put("music", commandsHashMap.get("m"));
+        commandsHashMap.put("gus", new GusCommand());
     }
 
     public static void main(String[] args) {

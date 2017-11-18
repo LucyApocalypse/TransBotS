@@ -26,6 +26,7 @@ public class VoteCommand implements Commands{
         StringBuilder builder = new StringBuilder();
         for (String a : args){
             builder.append(a);
+            builder.append(" ");
         }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -33,7 +34,7 @@ public class VoteCommand implements Commands{
                 .setColor(Color.ORANGE)
                 .setTitle("VOTE")
                 .addField("Author", event.getMessage().getAuthor().getName(), false)
-                .addField("Content", builder.toString(), false);
+                .addField("Content", builder.toString().trim(), false);
 
         Message message = new MessageBuilder().setEmbed(embedBuilder.build()).build();
         event.getTextChannel().sendMessage(message).queue();

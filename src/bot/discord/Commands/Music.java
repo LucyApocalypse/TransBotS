@@ -94,7 +94,13 @@ public class Music implements Commands {
 
     }
     private void skip(Guild g) {
-        getPlayer(g).stopTrack();
+        try {
+            getPlayer(g).stopTrack();
+        }catch (Exception e){
+            e.printStackTrace();
+            getPlayer(g).destroy();
+        }
+
     }
     private String getTimestamp(long milis) {
         long seconds = milis / 1000;
@@ -178,18 +184,16 @@ public class Music implements Commands {
                 break;
 
             case "skip":
-            case "s":
 
                 if (isIdle(guild)) return;
                 skip(guild);
                 break;
 
-
             case "stop":
 
                 if (isIdle(guild)) return;
-                getManager(guild).purgeQueue();
                 skip(guild);
+                getManager(guild).purgeQueue();
                 guild.getAudioManager().closeAudioConnection();
                 break;
 
@@ -282,11 +286,18 @@ public class Music implements Commands {
 
                 break;
 
+            case "help":
+                event.getTextChannel().sendMessage(
+                        help().build()
+                ).queue();
+                break;
+
                 default:
                     event.getTextChannel().sendMessage(
-
-                            help().build()
-
+                            new EmbedBuilder().setTitle("Error!")
+                            .setColor(Color.RED)
+                            .setDescription("Try tu use ``!m help``")
+                            .build()
                     ).queue();
         }
 
@@ -295,7 +306,24 @@ public class Music implements Commands {
 
     @Override
     public EmbedBuilder help() {
-        return null;
+        EmbedBuilder builder = new EmbedBuilder().setTitle("**MUSIC HELP**");
+        builder.addField("Play", "Play track from source\nUsage: `!m p(lay) [source]`", true);
+        builder.addField("Stop", "Stop playing tracks \nUsage: `!m stop`", true);
+        builder.addBlankField(false);
+        builder.addField("Pause", "Make pause \nUsage: `!m pause`", true);
+        builder.addField("Resume", "Continue playing \nUsage: `!m resume`", true);
+        builder.addBlankField(false);
+        builder.addField("Skip", "Skip this track \nUsage: `!m skip`", true);
+        builder.addField("Shuffle", "Shuffle tracks queue \nUsage: `!m shuffle`", true);
+        builder.addBlankField(false);
+        builder.addField("NP (NOW / INFO)", "Info abou now playing track \nUsage: `!m np (now, info)", true);
+        builder.addField("Queue (List)", "Tracks queue \nUsage: `!m queue (list)`", true);
+        builder.addBlankField(false);
+        builder.addField("Repeat", "Turn on / off track repeat \nUsage: `!m repeat`", true);
+        builder.addField("Help", "Get help \nUsage: `!m help`", true);
+        builder.setColor(Color.YELLOW);
+
+        return builder;
     }
 
     @Override

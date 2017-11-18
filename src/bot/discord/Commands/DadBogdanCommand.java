@@ -21,6 +21,7 @@ public class DadBogdanCommand implements Commands {
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws InterruptedException {
 
+        event.getMessage().delete().queue();
         String s = "░░▄███████▀▀▀▀▀▀███████▄\n" +
                 "░▐████▀▒ЗАПУСКАЕМ▒▀██████▄\n" +
                 "░███▀▒▒▒▒▒ДЯДЮ▒▒▒▒▒▒▀█████\n" +
