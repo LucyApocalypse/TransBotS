@@ -258,6 +258,25 @@ public class Music implements Commands {
 
                 break;
 
+            case "repeat":
+            case "r":
+                getManager(guild).setRepeatable();
+
+                StringBuilder builder = new StringBuilder().append("Now I'll ");
+                if (getManager(guild).isRepeatable()) {
+                    builder.append("**REPEAT** tracks");
+                } else {
+                    builder.append("** NOT REPEAT** tracks");
+                }
+
+                event.getTextChannel().sendMessage(
+
+                        new EmbedBuilder()
+                                .setColor(Color.YELLOW)
+                                .setDescription(builder.toString())
+                                .build()
+                );
+
                 default:
                     event.getTextChannel().sendMessage(
 
