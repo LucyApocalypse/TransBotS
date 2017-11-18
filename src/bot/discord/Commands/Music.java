@@ -14,6 +14,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
@@ -167,6 +168,20 @@ public class Music implements Commands {
 
             case "play":
             case "p":
+
+                List<VoiceChannel> channels = event.getJDA().getVoiceChannels();
+                Set<Member> members = new HashSet<>();
+
+                for (VoiceChannel channel : channels){
+                    members.addAll(channel.getMembers());
+                }
+
+                if(!members.contains(event.getMember())){
+                    event.getTextChannel().sendMessage("I'm sorry, " + event.getMember().getAsMention()
+                            + ", but you need enter to voice chanel!").queue();
+                    return;
+                }
+
                 if (args.length < 2) {
                     sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
                     return;
@@ -269,9 +284,9 @@ public class Music implements Commands {
                         new EmbedBuilder()
                                 .setDescription(
                                         "**CURRENT QUEUE:**\n" +
-                                                "[ Tracks | Side *" + sideNumb + "* */* *" + sideNumbAll + "*]" + "\t(repeat: *" + getManager(guild).isRepeatable() + "*)\n" +
-                                                out
-                                )
+                                                "[ Tracks | Side *" + sideNumb + "* */* *" + sideNumbAll + "*]" +
+                                                "\t(repeat: *" + getManager(guild).isRepeatable() + "*)\n" + out)
+                                .setColor(Color.YELLOW)
                                 .build()
                 ).queue();
 
@@ -281,7 +296,8 @@ public class Music implements Commands {
             case "next":
 
                 AudioInfo audioInfo = getManager(guild).getInfo(getPlayer(guild).getPlayingTrack());
-                getManager(guild).queue(audioInfo.getTrack().makeClone(), audioInfo.getAuthor());
+                if(getManager(guild).isRepeatable())
+                    getManager(guild).queue(audioInfo.getTrack().makeClone(), audioInfo.getAuthor());
                 getPlayer(guild).stopTrack();
 
                 break;
@@ -305,7 +321,7 @@ public class Music implements Commands {
                 event.getTextChannel().sendMessage(
 
                         new EmbedBuilder()
-                                .setColor(Color.YELLOW)
+                                .setColor(Color.GREEN)
                                 .setDescription(builder.toString())
                                 .build()
                 ).queue();
@@ -340,7 +356,7 @@ public class Music implements Commands {
         builder.addField("Resume", "Continue playing \nUsage: `!m resume`", true);
         builder.addBlankField(false);
         builder.addField("Skip", "Skip this track \nUsage: `!m skip`", true);
-        builder.addField("Next", "Skip this track\nand add to the queue and\nUsage: `!m next`", true);
+        builder.addField("Next", "Skip this track\nand add to the queue and\n if `repeat` is `true`\nUsage: `!m next`", true);
         builder.addBlankField(false);
         builder.addField("NP (NOW / INFO)", "Info abou now playing track \nUsage: `!m np (now, info)`", true);
         builder.addField("Queue (List)", "Tracks queue \nUsage: `!m queue (list)`", true);

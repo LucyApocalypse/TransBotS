@@ -25,7 +25,11 @@ public class TrackManager extends AudioEventAdapter {
     }
 
     public void setRepeatable() {
-        isRepeatable = !isRepeatable;
+        if(queue.size() >= 2) {
+            isRepeatable = !isRepeatable;
+        } else {
+            isRepeatable = false;
+        }
     }
 
     public TrackManager(AudioPlayer player) {

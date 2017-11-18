@@ -23,6 +23,11 @@ public class VoteCommand implements Commands{
             event.getTextChannel().sendMessage(help().build()).queue();
         }
 
+        if(args[0].equalsIgnoreCase("--help")){
+            event.getTextChannel().sendMessage(help().build()).queue();
+            return;
+        }
+
         StringBuilder builder = new StringBuilder();
         for (String a : args){
             builder.append(a);
@@ -47,7 +52,8 @@ public class VoteCommand implements Commands{
 
     @Override
     public EmbedBuilder help() {
-        return null;
+        return new EmbedBuilder().setTitle("**VOTE HELP**").addField("USAGE", "`!vote [content]`" +
+                "\n For example, `!vote make a new voice chat?`", false);
     }
 
     @Override
