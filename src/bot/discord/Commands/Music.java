@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -26,6 +27,7 @@ public class Music implements Commands {
     private static Guild guild;
     private static final AudioPlayerManager MANAGER = new DefaultAudioPlayerManager();
     private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS = new HashMap<>();
+    private static final YoutubeAudioSourceManager a = new YoutubeAudioSourceManager(true);
 
 
     public Music() {
@@ -171,6 +173,22 @@ public class Music implements Commands {
                 }
 
                 String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
+
+                if(
+                        input.contains("http://")   ||
+                        input.contains("https://")  ||
+                        input.contains("www.")      ||
+                        input.contains(".com")      ||
+                        input.contains(".ru")){
+                    event.getTextChannel().sendMessage(
+                            new EmbedBuilder()
+                            .setColor(Color.RED)
+                            .setTitle("**Sorry**")
+                            .setDescription("Try to find track buy name\n" + "Usage: `!m play [TrackName]`")
+                            .build()
+                    ).queue();
+                }
+
                 input = "ytsearch: " + input;
                 loadTrack(input, event.getMember());
 
@@ -260,6 +278,14 @@ public class Music implements Commands {
 
                 break;
 
+            case "next":
+
+                AudioInfo audioInfo = getManager(guild).getInfo(getPlayer(guild).getPlayingTrack());
+                getManager(guild).queue(audioInfo.getTrack().makeClone(), audioInfo.getAuthor());
+                getPlayer(guild).stopTrack();
+
+                break;
+
             case "repeat":
             case "r":
 
@@ -314,12 +340,17 @@ public class Music implements Commands {
         builder.addField("Resume", "Continue playing \nUsage: `!m resume`", true);
         builder.addBlankField(false);
         builder.addField("Skip", "Skip this track \nUsage: `!m skip`", true);
-        builder.addField("Shuffle", "Shuffle tracks queue \nUsage: `!m shuffle`", true);
+        builder.addField("Next", "Skip this track\nand add to the queue and\nUsage: `!m next`", true);
         builder.addBlankField(false);
-        builder.addField("NP (NOW / INFO)", "Info abou now playing track \nUsage: `!m np (now, info)", true);
+        builder.addField("NP (NOW / INFO)", "Info abou now playing track \nUsage: `!m np (now, info)`", true);
         builder.addField("Queue (List)", "Tracks queue \nUsage: `!m queue (list)`", true);
         builder.addBlankField(false);
-        builder.addField("Repeat", "Turn on / off track repeat \nUsage: `!m repeat`", true);
+        builder.addField("Repeat", "Turn on / off track repeat \nUsage: `!m r(epeat)`", true);
+        builder.addField("Shuffle", "Shuffle tracks queue \nUsage: `!m shuffle`", true);
+        builder.addBlankField(false);
+        builder.addField("Volume", "Set Bot volume\nUsage: `!m volume [0-100]`", true);
+        builder.addField("Volume", "Get Bot volume\nUsage: `!m volume`", true);
+        builder.addBlankField(false);
         builder.addField("Help", "Get help \nUsage: `!m help`", true);
         builder.setColor(Color.YELLOW);
 
