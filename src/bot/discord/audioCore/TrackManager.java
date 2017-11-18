@@ -16,6 +16,10 @@ public class TrackManager extends AudioEventAdapter {
     private final Queue<AudioInfo> queue;
     private boolean isRepeatable = false;
 
+    public AudioPlayer getPLAYER() {
+        return PLAYER;
+    }
+
     public boolean isRepeatable() {
         return isRepeatable;
     }
@@ -48,7 +52,6 @@ public class TrackManager extends AudioEventAdapter {
                 .findFirst().orElse(null);
     }
 
-
     public void purgeQueue() {
         queue.clear();
     }
@@ -62,7 +65,6 @@ public class TrackManager extends AudioEventAdapter {
         purgeQueue();
         queue.addAll(cQueue);
     }
-
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
@@ -79,20 +81,16 @@ public class TrackManager extends AudioEventAdapter {
         AudioInfo a = queue.poll();
         Guild g;
 
-        try {
-            g = a.getAuthor().getGuild();
-            if(isRepeatable && !(endReason.equals(AudioTrackEndReason.STOPPED))){
-                queue(a.getTrack().makeClone(), a.getAuthor());
-            }
-        } catch (Exception e){
-            player.destroy();
-            return;
-        }
+        g = a.getAuthor().getGuild();
+
         if (queue.isEmpty())
             g.getAudioManager().closeAudioConnection();
         else
             player.playTrack(queue.element().getTrack());
 
+        if(!queue.isEmpty()  && !endReason.equals(AudioTrackEndReason.STOPPED) && isRepeatable){
+            queue(a.getTrack().makeClone(), a.getAuthor());
+        }
     }
 }
 

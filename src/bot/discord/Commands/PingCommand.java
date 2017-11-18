@@ -1,4 +1,5 @@
 package bot.discord.Commands;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class PingCommand implements Commands {
@@ -21,8 +22,8 @@ public class PingCommand implements Commands {
     }
 
     @Override
-    public String help() {
-        return "Usage !ping";
+    public EmbedBuilder help() {
+        return null;
     }
 
     @Override

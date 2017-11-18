@@ -112,12 +112,9 @@ public class Music implements Commands {
         return "`[ " + getTimestamp(length) + " ]` " + title + "\n";
     }
 
-    private void sendErrorMsg(MessageReceivedEvent event, String content) {
+    private void sendErrorMsg(MessageReceivedEvent event, EmbedBuilder content) {
         event.getTextChannel().sendMessage(
-                new EmbedBuilder()
-                        .setColor(Color.red)
-                        .setDescription(content)
-                        .build()
+                content.build()
         ).queue();
     }
 
@@ -163,7 +160,7 @@ public class Music implements Commands {
             case "play":
             case "p":
                 if (args.length < 2) {
-                    sendErrorMsg(event, "Please enter a valid source!");
+                    sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
                     return;
                 }
 
@@ -215,7 +212,8 @@ public class Music implements Commands {
                         new EmbedBuilder()
                                 .setDescription("**CURRENT TRACK INFO:**")
                                 .addField("Title", info.title, false)
-                                .addField("Duration", "`[ " + getTimestamp(track.getPosition()) + "/ " + getTimestamp(track.getDuration()) + " ]`", false)
+                                .addField("Duration",
+                                        "`[ " + getTimestamp(track.getPosition()) + "/ " + getTimestamp(track.getDuration()) + " ]`", false)
                                 .addField("Author", info.author, false)
                                 .setColor(Color.YELLOW)
                                 .build()
@@ -249,7 +247,7 @@ public class Music implements Commands {
                         new EmbedBuilder()
                                 .setDescription(
                                         "**CURRENT QUEUE:**\n" +
-                                                "*[ Tracks | Side " + sideNumb + " / " + sideNumbAll + "]*\n" +
+                                                "[ Tracks | Side *" + sideNumb + "* */* *" + sideNumbAll + "*]" + "\t(repeat: *" + getManager(guild).isRepeatable() + "*)\n" +
                                                 out
                                 )
                                 .build()
@@ -260,6 +258,8 @@ public class Music implements Commands {
 
             case "repeat":
             case "r":
+
+                getPlayer(guild);
                 getManager(guild).setRepeatable();
 
                 StringBuilder builder = new StringBuilder().append("Now I'll ");
@@ -269,21 +269,23 @@ public class Music implements Commands {
                     builder.append("** NOT REPEAT** tracks");
                 }
 
+                builder.append("\n");
+                builder.append("*I can repeat only 2 or more tracks!*");
+
                 event.getTextChannel().sendMessage(
 
                         new EmbedBuilder()
                                 .setColor(Color.YELLOW)
                                 .setDescription(builder.toString())
                                 .build()
-                );
+                ).queue();
+
+                break;
 
                 default:
                     event.getTextChannel().sendMessage(
 
-                            new EmbedBuilder().setTitle("**HELP**")
-                            .setDescription(help())
-                            .setColor(Color.YELLOW)
-                            .build()
+                            help().build()
 
                     ).queue();
         }
@@ -292,8 +294,8 @@ public class Music implements Commands {
     }
 
     @Override
-    public String help() {
-        return "";
+    public EmbedBuilder help() {
+        return null;
     }
 
     @Override

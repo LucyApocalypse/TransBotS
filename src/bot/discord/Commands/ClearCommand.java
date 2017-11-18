@@ -47,7 +47,7 @@ public class ClearCommand implements Commands {
     }
 
     @Override
-    public String help() {
+    public EmbedBuilder help() {
         return null;
     }
 

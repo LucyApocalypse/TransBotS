@@ -2,7 +2,6 @@ package bot.discord.Commands;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
@@ -21,7 +20,7 @@ public class VoteCommand implements Commands{
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws InterruptedException {
         if(args.length == 0){
-            event.getTextChannel().sendMessage(help()).queue();
+            event.getTextChannel().sendMessage(help().build()).queue();
         }
 
         StringBuilder builder = new StringBuilder();
@@ -46,7 +45,7 @@ public class VoteCommand implements Commands{
     }
 
     @Override
-    public String help() {
+    public EmbedBuilder help() {
         return null;
     }
 
