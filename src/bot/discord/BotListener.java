@@ -10,6 +10,7 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
         if (event.getMessage().getAuthor().isBot()){
             return;
         }
