@@ -8,9 +8,25 @@ import java.util.Arrays;
 public class CommandParser {
     public CommandContainer parse(String rw, MessageReceivedEvent event){
             ArrayList<String> split  = new ArrayList<>();
-        String beheaded = rw.replaceFirst("!", "");
+            String beheaded = rw.replaceFirst("!", "");
             String[] splitbeheaded  = beheaded.split(" ");
-        split.addAll(Arrays.asList(splitbeheaded));
+            String[] splitbeheaded1 = new String[splitbeheaded.length];
+            String m;
+            for(int i = 0; i < splitbeheaded.length; i++){
+                m = splitbeheaded[i];
+                if(m.startsWith("https://")){
+                    m = m.substring(8);
+                    if(!m.startsWith("www."))
+                        m = "www." + m;
+                } if(m.startsWith("http://")){
+                    m = m.substring(7);
+                    if(!m.startsWith("www."))
+                        m = "www." + m;
+                }
+                splitbeheaded1[i]  = m;
+            }
+            splitbeheaded = splitbeheaded1;
+            split.addAll(Arrays.asList(splitbeheaded));
             String invoke = split.get(0);
             String[] args = new String[split.size() - 1];
             split.subList(1, split.size()).toArray(args);

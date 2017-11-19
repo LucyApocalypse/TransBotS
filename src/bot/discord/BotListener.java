@@ -23,25 +23,38 @@ public class BotListener extends ListenerAdapter {
             }
 
             if(messageEmbed.get(0).getTitle().contains("VOTE") && event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())){
-                Guild guild = event.getGuild();
-                List<Emote> emotes = guild.getJDA().getEmotes();
-                System.out.println(emotes.size());
+                //Guild guild = event.getGuild();
+                // List<Emote> emotes =
 
-                for(Emote e : emotes){
+                /*for(Emote e : emotes){
                     System.out.println(e.getName() + "   " + e.getId());
-                }
+                }*/
             }
             return;
         }
 
+        String e = event.getMessage().getContent();
+        StringBuilder builder = new StringBuilder();
+        String[] es = e.split(" ");
+        for (String s : es){
+            if(s.toLowerCase().startsWith("http://")){
+                s = s.substring(7);
+            } else if(s.toLowerCase().startsWith("https://")){
+                s = s.substring(8);
+            }
+            builder.append(s);
+            builder.append(" ");
+        }
+        e = builder.toString().trim();
+
         if (event.getMessage().getAuthor().isBot()){
             return;
         }
-        if(event.getMessage().getContent().startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
+        if(e.startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
             try {
-                Main.handleCommand(Main.parser.parse(event.getMessage().getContent().toLowerCase(), event));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                Main.handleCommand(Main.parser.parse(e, event));
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
     }

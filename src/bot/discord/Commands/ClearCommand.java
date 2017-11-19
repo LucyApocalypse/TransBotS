@@ -45,7 +45,7 @@ public class ClearCommand implements Commands {
         if (    !authorPermissions.contains(Permission.ADMINISTRATOR) ||
                 !authorPermissions.contains(Permission.MESSAGE_MANAGE) ||
                 !authorPermissions.contains(Permission.MANAGE_CHANNEL) ||
-                !event.getAuthor().getName().equals("artemgafarov#2917")){
+                !event.getAuthor().getName().equals("artemgafarov")){
 
             event.getTextChannel().sendMessage("I'm sorry, " + event.getAuthor().getAsMention()
                                     + ", but you don't have the right permission ").queue();

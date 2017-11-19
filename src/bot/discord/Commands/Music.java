@@ -25,6 +25,8 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,19 +56,14 @@ public class Music implements Commands {
         AudioPlayer p = MANAGER.createPlayer();
         TrackManager m = new TrackManager(p);
         p.addListener(m);
-
         guild.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
-
         PLAYERS.put(g, new AbstractMap.SimpleEntry<>(p, m));
-
-
         return p;
     }
 
     private boolean hasPlayer(Guild g) {
         return PLAYERS.containsKey(g);
     }
-
     private AudioPlayer getPlayer(Guild g) {
         if (hasPlayer(g))
             return PLAYERS.get(g).getKey();
@@ -77,34 +74,25 @@ public class Music implements Commands {
     private TrackManager getManager(Guild g) {
         return PLAYERS.get(g).getValue();
     }
-
     private boolean isIdle(Guild g) {
         return !hasPlayer(g) || getPlayer(g).getPlayingTrack() == null;
     }
-
     public void loadTrack(String identifier, Member author) {
-
         Guild guild = author.getGuild();
         getPlayer(guild);
-
         MANAGER.setFrameBufferDuration(5000);
         MANAGER.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
-
             @Override
             public void trackLoaded(AudioTrack track) {
                 getManager(guild).queue(track, author);
             }
-
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
                     getManager(guild).queue(playlist.getTracks().get(0), author);
             }
-
             @Override
             public void noMatches() {
-
             }
-
             @Override
             public void loadFailed(FriendlyException exception) {
                 exception.printStackTrace();
@@ -156,8 +144,6 @@ public class Music implements Commands {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-
-
         guild = event.getGuild();
         if (args.length < 1) {
             sendErrorMsg(event, help());
@@ -184,70 +170,58 @@ public class Music implements Commands {
 
             case "play":
             case "p":
-
                 List<VoiceChannel> channels = event.getJDA().getVoiceChannels();
                 Set<Member> members = new HashSet<>();
-
                 for (VoiceChannel channel : channels){
                     members.addAll(channel.getMembers());
                 }
-
                 if(!members.contains(event.getMember())){
                     event.getTextChannel().sendMessage("I'm sorry, " + event.getMember().getAsMention()
                             + ", but you need enter to voice chanel!").queue();
                     return;
                 }
-
                 if (args.length < 2) {
                     sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
                     return;
                 }
+                String identifier;
 
-                String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
+                try {
+                    new URL(args[1]);
+                    identifier = args[1];
+                } catch(MalformedURLException e) {
+                        identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                }
 
-                if (!(input.startsWith("http://") || input.startsWith("https://") || input.startsWith("www.")))
-                    input = "ytsearch: " + input;
-
-                loadTrack(input, event.getMember());
+                loadTrack(identifier, event.getMember());
 
                 break;
-
             case "pause":
                 getPlayer(guild).setPaused(true);
                 break;
             case "resume":
                 getPlayer(guild).setPaused(false);
                 break;
-
             case "skip":
-
                 if (isIdle(guild)) return;
                 skip(guild);
                 break;
-
             case "stop":
-
                 if (isIdle(guild)) return;
                 skip(guild);
                 getManager(guild).purgeQueue();
                 guild.getAudioManager().closeAudioConnection();
                 break;
-
-
             case "shuffle":
                 if (isIdle(guild)) return;
                 getManager(guild).shuffleQueue();
                 break;
-
             case "now":
             case "info":
             case "np":
-
                 if (isIdle(guild)) return;
-
                 AudioTrack track = getPlayer(guild).getPlayingTrack();
                 AudioTrackInfo info = track.getInfo();
-
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder()
                                 .setDescription("**CURRENT TRACK INFO:**")
@@ -258,31 +232,20 @@ public class Music implements Commands {
                                 .setColor(Color.YELLOW)
                                 .build()
                 ).queue();
-
                 break;
-
-
-
             case "queue":
             case "list":
-
                 if (isIdle(guild)) return;
-
                 int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
-
                 List<String> tracks = new ArrayList<>();
                 List<String> trackSublist;
-
                 getManager(guild).getQueue().forEach(audioInfo -> tracks.add(buildQueueMessage(audioInfo)));
-
                 if (tracks.size() > 100)
                     trackSublist = tracks.subList((sideNumb-1)*100, (sideNumb-1)*100+20);
                 else
                     trackSublist = tracks;
-
                 String out = trackSublist.stream().collect(Collectors.joining("\n"));
                 int sideNumbAll = tracks.size() >= 100 ? tracks.size() / 100 : 1;
-
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder()
                                 .setDescription(
@@ -292,51 +255,37 @@ public class Music implements Commands {
                                 .setColor(Color.YELLOW)
                                 .build()
                 ).queue();
-
-
                 break;
-
             case "next":
-
                 AudioInfo audioInfo = getManager(guild).getInfo(getPlayer(guild).getPlayingTrack());
                 if(getManager(guild).isRepeatable())
                     getManager(guild).queue(audioInfo.getTrack().makeClone(), audioInfo.getAuthor());
                 getPlayer(guild).stopTrack();
-
                 break;
-
             case "repeat":
             case "r":
-
                 getPlayer(guild);
                 getManager(guild).setRepeatable();
-
                 StringBuilder builder = new StringBuilder().append("Now I'll ");
                 if (getManager(guild).isRepeatable()) {
                     builder.append("**REPEAT** tracks");
                 } else {
-                    builder.append("** NOT REPEAT** tracks");
+                    builder.append("**NOT REPEAT** tracks");
                 }
-
                 builder.append("\n");
                 builder.append("*I can repeat only 2 or more tracks!*");
-
                 event.getTextChannel().sendMessage(
-
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setDescription(builder.toString())
                                 .build()
                 ).queue();
-
                 break;
-
             case "help":
                 event.getTextChannel().sendMessage(
                         help().build()
                 ).queue();
                 break;
-
                 default:
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder().setTitle("Error!")
@@ -345,8 +294,6 @@ public class Music implements Commands {
                             .build()
                     ).queue();
         }
-
-
     }
 
     @Override
@@ -372,12 +319,10 @@ public class Music implements Commands {
         builder.addBlankField(false);
         builder.addField("Help", "Get help \nUsage: `!m help`", true);
         builder.setColor(Color.YELLOW);
-
         return builder;
     }
 
     @Override
     public void execute(boolean success, MessageReceivedEvent event) {
-
     }
 }
