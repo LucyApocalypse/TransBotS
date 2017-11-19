@@ -109,7 +109,7 @@ public class Music implements Commands {
         }
 
     }
-    private String getTimestamp(long milis) {
+    public String getTimestamp(long milis) {
         long seconds = milis / 1000;
         long hours = Math.floorDiv(seconds, 3600);
         seconds = seconds - (hours * 3600);
@@ -194,7 +194,6 @@ public class Music implements Commands {
                 }
 
                 loadTrack(identifier, event.getMember());
-
                 break;
             case "pause":
                 getPlayer(guild).setPaused(true);

@@ -14,6 +14,7 @@ public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
     private final Queue<AudioInfo> queue;
+    private  AudioInfo lastTrack;
     private boolean isRepeatable = false;
 
     public AudioPlayer getPLAYER() {
