@@ -85,7 +85,12 @@ public class TrackManager extends AudioEventAdapter {
         AudioInfo a = queue.poll();
         Guild g;
 
-        g = a.getAuthor().getGuild();
+        try {
+            g = a.getAuthor().getGuild();
+        }catch (Exception e){
+            return;
+        }
+
 
         if (queue.isEmpty())
             g.getAudioManager().closeAudioConnection();

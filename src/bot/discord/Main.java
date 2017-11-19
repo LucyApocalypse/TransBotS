@@ -1,11 +1,11 @@
 package bot.discord;
 
 import bot.discord.Commands.*;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Game;;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +22,7 @@ public class Main {
         jdaBuilder.setToken(token);
         jdaBuilder.setAutoReconnect(true);
         jdaBuilder.setStatus(OnlineStatus.ONLINE);
+        jdaBuilder.setGame(Game.of("Use !help for help"));
 
         try {
             BotListener botListener = new BotListener();

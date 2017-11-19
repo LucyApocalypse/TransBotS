@@ -6,6 +6,13 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -28,10 +35,18 @@ public class Music implements Commands {
     private static Guild guild;
     private static final AudioPlayerManager MANAGER = new DefaultAudioPlayerManager();
     private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS = new HashMap<>();
-    private static final YoutubeAudioSourceManager a = new YoutubeAudioSourceManager(true);
 
 
     public Music() {
+        MANAGER.registerSourceManager(new YoutubeAudioSourceManager(true));
+        MANAGER.registerSourceManager(new SoundCloudAudioSourceManager(true));
+        MANAGER.registerSourceManager(new BandcampAudioSourceManager());
+        MANAGER.registerSourceManager(new VimeoAudioSourceManager());
+        MANAGER.registerSourceManager(new TwitchStreamAudioSourceManager());
+        MANAGER.registerSourceManager(new BeamAudioSourceManager());
+        MANAGER.registerSourceManager(new LocalAudioSourceManager());
+        MANAGER.registerSourceManager(new HttpAudioSourceManager());
+
         AudioSourceManagers.registerRemoteSources(MANAGER);
     }
 
@@ -43,6 +58,7 @@ public class Music implements Commands {
         guild.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
 
         PLAYERS.put(g, new AbstractMap.SimpleEntry<>(p, m));
+
 
         return p;
     }
@@ -189,22 +205,9 @@ public class Music implements Commands {
 
                 String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
-                if(
-                        input.contains("http://")   ||
-                        input.contains("https://")  ||
-                        input.contains("www.")      ||
-                        input.contains(".com")      ||
-                        input.contains(".ru")){
-                    event.getTextChannel().sendMessage(
-                            new EmbedBuilder()
-                            .setColor(Color.RED)
-                            .setTitle("**Sorry**")
-                            .setDescription("Try to find track buy name\n" + "Usage: `!m play [TrackName]`")
-                            .build()
-                    ).queue();
-                }
+                if (!(input.startsWith("http://") || input.startsWith("https://") || input.startsWith("www.")))
+                    input = "ytsearch: " + input;
 
-                input = "ytsearch: " + input;
                 loadTrack(input, event.getMember());
 
                 break;
