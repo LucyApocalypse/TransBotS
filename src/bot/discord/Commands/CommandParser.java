@@ -23,7 +23,7 @@ public class CommandParser {
                     if(!m.startsWith("www."))
                         m = "www." + m;
                 }
-                splitbeheaded1[i]  = m;
+                splitbeheaded1[i]  = m.toLowerCase();
             }
             splitbeheaded = splitbeheaded1;
             split.addAll(Arrays.asList(splitbeheaded));

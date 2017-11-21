@@ -25,8 +25,6 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -281,6 +279,63 @@ public class Music implements Commands {
                         help().build()
                 ).queue();
                 break;
+
+            case "lock":
+
+                if(getManager(guild).getChannel() == null){
+                    event.getTextChannel().sendMessage(
+                            new EmbedBuilder().setTitle("Error!")
+                                    .setColor(Color.RED)
+                                    .setDescription("I **can't lock** voice channel!")
+                                    .build()
+                    ).queue();
+                    return;
+                }
+
+                getManager(guild).setVChanLock(true);
+                event.getTextChannel().sendMessage(
+                        new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
+                                .setColor(Color.GREEN)
+                                .setDescription("Now voice channel " + getManager(guild).getChannel().getName() + " **IS LOCKED**!")
+                                .build()
+                ).queue();
+
+                break;
+
+            case "unlock":
+
+                if(getManager(guild).getChannel() == null){
+                    event.getTextChannel().sendMessage(
+                            new EmbedBuilder().setTitle("Error!")
+                                    .setColor(Color.RED)
+                                    .setDescription("I **can't unlock** voice channel!")
+                                    .build()
+                    ).queue();
+                    return;
+                }
+
+                getManager(guild).setVChanLock(false);
+                event.getTextChannel().sendMessage(
+                        new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
+                                .setColor(Color.GREEN)
+                                .setDescription("Now voice channel " + getManager(guild).getChannel().getName() + " **IS UNLOCKED**!")
+                                .build()
+                ).queue();
+
+                break;
+
+            case "islocked":
+
+                event.getTextChannel().sendMessage(
+                        new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
+                                .setColor(Color.YELLOW)
+                                .setDescription("Voice channel " + getManager(guild).getChannel().getName() + " **IS**"
+                                        + (getManager(guild).isVCHannLocked() == false ? " ** UN**" : " ") + "**LOCKED**")
+                                .build()
+                ).queue();
+
+                break;
+
                 default:
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder().setTitle("Error!")
@@ -303,7 +358,7 @@ public class Music implements Commands {
         builder.addField("Skip", "Skip this track \nUsage: `!m skip`", true);
         builder.addField("Next", "Skip this track\nand add to the queue and\n if `repeat` is `true`\nUsage: `!m next`", true);
         builder.addBlankField(false);
-        builder.addField("NP (NOW / INFO)", "Info abou now playing track \nUsage: `!m np (now, info)`", true);
+        builder.addField("NP (NOW / INFO)", "Info about now playing track \nUsage: `!m np (now, info)`", true);
         builder.addField("Queue (List)", "Tracks queue \nUsage: `!m queue (list)`", true);
         builder.addBlankField(false);
         builder.addField("Repeat", "Turn on / off track repeat \nUsage: `!m r(epeat)`", true);
@@ -312,7 +367,11 @@ public class Music implements Commands {
         builder.addField("Volume", "Set Bot volume\nUsage: `!m volume [0-100]`", true);
         builder.addField("Volume", "Get Bot volume\nUsage: `!m volume`", true);
         builder.addBlankField(false);
-        builder.addField("Help", "Get help \nUsage: `!m help`", true);
+        builder.addField("Lock", "Set Voice Channel Locked\nUsage: `!m lock]`", true);
+        builder.addField("Unlock", "Set Voice Channel Unlocked\nUsage: `!m unlock`", true);
+        builder.addBlankField(false);
+        builder.addField("Is locked?", "Is voice channel locked?\nUsage: `!m islocked`", true);
+        builder.addField("Help", "Get help (about music command [**not ready yet**])\nUsage: `!m help (command)`", true);
         builder.setColor(Color.YELLOW);
         return builder;
     }

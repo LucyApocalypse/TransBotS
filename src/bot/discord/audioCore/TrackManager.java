@@ -16,6 +16,20 @@ public class TrackManager extends AudioEventAdapter {
     private final Queue<AudioInfo> queue;
     private  AudioInfo lastTrack;
     private boolean isRepeatable = false;
+    private VoiceChannel n;
+    private boolean lockVchan = false;
+
+    public VoiceChannel getChannel() {
+        return n;
+    }
+
+    public boolean isVCHannLocked() {
+        return lockVchan;
+    }
+
+    public void setVChanLock(boolean lock) {
+        this.lockVchan = lock;
+    }
 
     public AudioPlayer getPLAYER() {
         return PLAYER;
@@ -74,10 +88,19 @@ public class TrackManager extends AudioEventAdapter {
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         AudioInfo info = queue.element();
-        VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
-        if (vChan == null)
+        VoiceChannel vChan;
+        if(!(info.getAuthor().getVoiceState().getChannel() == null) && !lockVchan) {
+            vChan  = info.getAuthor().getVoiceState().getChannel();
+            n = vChan;
+        } else {
+            vChan = n;
+        }
+
+        if (vChan == null) {
             player.stopTrack();
-        else
+            n = null;
+            lockVchan = false;
+        } else
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
     }
 
