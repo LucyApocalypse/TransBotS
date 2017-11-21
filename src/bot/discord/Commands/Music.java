@@ -201,6 +201,29 @@ public class Music implements Commands {
                 identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
                 loadTrack(identifier, event.getMember());
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                AudioInfo audioInfo1 = getManager(guild).getQueue().get(getManager(guild).getQueue().size() - 1);
+                AudioTrackInfo info1 = audioInfo1.getTrack().getInfo();
+
+                event.getTextChannel().sendMessage(
+
+                        new EmbedBuilder()
+                            .setColor(Color.YELLOW)
+                            .setTitle("**NEW TRACK**")
+                            .setDescription("New track added")
+                            .addField("Track", info1.title, false)
+                            .addField("Author", info1.author, false)
+                            .addField("Duration", getTimestamp(info1.length), false)
+                            .build()
+
+                ).queue();
+
                 break;
             case "pause":
                 getPlayer(guild).setPaused(true);

@@ -25,14 +25,6 @@ public class AudioInfo {
         return AUTHOR;
     }
 
-    public AudioTrack getTRACK() {
-        return TRACK;
-    }
-
-    public Member getAUTHOR() {
-        return AUTHOR;
-    }
-
     public Long getDURATION() {
         return DURATION;
     }

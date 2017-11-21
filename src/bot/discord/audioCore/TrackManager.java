@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private final Queue<AudioInfo> queue;
+    private final Deque<AudioInfo> queue;
     private  AudioInfo lastTrack;
     private boolean isRepeatable = false;
     private VoiceChannel n;
@@ -49,7 +49,7 @@ public class TrackManager extends AudioEventAdapter {
 
     public TrackManager(AudioPlayer player) {
         this.PLAYER = player;
-        this.queue = new LinkedBlockingQueue<>();
+        this.queue = new LinkedList<>();
     }
 
     public void queue(AudioTrack track, Member author) {
@@ -60,8 +60,8 @@ public class TrackManager extends AudioEventAdapter {
         }
     }
 
-    public Set<AudioInfo> getQueue() {
-        return new LinkedHashSet<>(queue);
+    public List<AudioInfo> getQueue() {
+        return new LinkedList<>(queue);
     }
 
     public AudioInfo getInfo(AudioTrack track) {
