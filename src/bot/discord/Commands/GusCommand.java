@@ -20,28 +20,34 @@ public class GusCommand implements Commands {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws InterruptedException {
-        event.getMessage().delete().queue();
-        String s = "ЗАПУСКАЕМ\n" +
-                "░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░\n" +
-                "▄███▀░◐░░░▌░░░░░░░\n" +
-                "░░░░▌░░░░░▐░░░░░░░\n" +
-                "░░░░▐░░░░░▐░░░░░░░\n" +
-                "░░░░▌░░░░░▐▄▄░░░░░\n" +
-                "░░░░▌░░░░▄▀▒▒▀▀▀▀▄\n" +
-                "░░░▐░░░░▐▒▒▒▒▒▒▒▒▀▀▄\n" +
-                "░░░▐░░░░▐▄▒▒▒▒▒▒▒▒▒▒▀▄\n" +
-                "░░░░▀▄░░░░▀▄▒▒▒▒▒▒▒▒▒▒▀▄\n" +
-                "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄\n" +
-                "░░░░░░░░░░░▌▌░▌▌░░░░░\n" +
-                "░░░░░░░░░░░▌▌░▌▌░░░░░\n" +
-                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░";
 
-        EmbedBuilder builder = new EmbedBuilder().setColor(Color.YELLOW);
-        builder.setDescription(s);
-        builder.setTitle("Just Gus", "https://vk.com/antich4t");
-        MessageBuilder messageBuilder = new MessageBuilder();
-        Message message = messageBuilder.setEmbed(builder.build()).build();
-        event.getTextChannel().sendMessage(message).queue();
+        try {
+            event.getMessage().delete().queue();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            String s = "ЗАПУСКАЕМ\n" +
+                    "░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░\n" +
+                    "▄███▀░◐░░░▌░░░░░░░\n" +
+                    "░░░░▌░░░░░▐░░░░░░░\n" +
+                    "░░░░▐░░░░░▐░░░░░░░\n" +
+                    "░░░░▌░░░░░▐▄▄░░░░░\n" +
+                    "░░░░▌░░░░▄▀▒▒▀▀▀▀▄\n" +
+                    "░░░▐░░░░▐▒▒▒▒▒▒▒▒▀▀▄\n" +
+                    "░░░▐░░░░▐▄▒▒▒▒▒▒▒▒▒▒▀▄\n" +
+                    "░░░░▀▄░░░░▀▄▒▒▒▒▒▒▒▒▒▒▀▄\n" +
+                    "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄\n" +
+                    "░░░░░░░░░░░▌▌░▌▌░░░░░\n" +
+                    "░░░░░░░░░░░▌▌░▌▌░░░░░\n" +
+                    "░░░░░░░░░▄▄▌▌▄▌▌░░░░░";
+
+            EmbedBuilder builder = new EmbedBuilder().setColor(Color.YELLOW);
+            builder.setDescription(s);
+            builder.setTitle("Just Gus", "https://vk.com/antich4t");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            Message message = messageBuilder.setEmbed(builder.build()).build();
+            event.getTextChannel().sendMessage(message).queue();
+        }
     }
 
     @Override

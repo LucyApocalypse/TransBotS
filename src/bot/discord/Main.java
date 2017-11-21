@@ -26,6 +26,8 @@ public class Main {
             BotListener botListener = new BotListener();
             jda = jdaBuilder.buildBlocking();
             jda.addEventListener(botListener);
+            if(!jda.getSelfUser().getName().equalsIgnoreCase("dad bogdan"))
+                jda.getSelfUser().getManager().setName("Dad Bogdan").queue();
         } catch (Exception ignored){
 
         }

@@ -51,6 +51,21 @@ public class ClearCommand implements Commands {
             return;
         }
 
+        List<Role> persinalRoles = event.getJDA().getSelfUser().getJDA().getRoles();
+        List<Permission> personalPermissions = new LinkedList<>();
+        for(Role role : persinalRoles){
+            personalPermissions.addAll(role.getPermissions());
+        }
+
+        if (    !personalPermissions.contains(Permission.ADMINISTRATOR) ||
+                !personalPermissions.contains(Permission.MESSAGE_MANAGE) ||
+                !personalPermissions.contains(Permission.MANAGE_CHANNEL)){
+
+            event.getTextChannel().sendMessage("I'm sorry, " + event.getAuthor().getAsMention()
+                    + ", but I don't have the right permission ").queue();
+            return;
+        }
+
         if(args.length == 0){
             event.getTextChannel().sendMessage(error.setDescription("Invalid Argument").build()).queue();
             return;
@@ -59,7 +74,14 @@ public class ClearCommand implements Commands {
         int n = getInt(args[0], event);
         n = ++n < 100 ? n : 99;
         List<Message> msg = new MessageHistory(event.getTextChannel()).retrievePast(n).complete();
-        event.getTextChannel().deleteMessages(msg).queue();
+        try {
+            event.getTextChannel().deleteMessages(msg).queue();
+        }catch (Exception e){
+            e.printStackTrace();
+            event.getTextChannel().sendMessage("I'm sorry, " + event.getAuthor().getAsMention()
+                    + ", but I don't have the right permission ").queue();
+        }
+
 
     }
 
