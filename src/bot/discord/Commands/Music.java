@@ -183,6 +183,19 @@ public class Music implements Commands {
                     sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
                     return;
                 }
+
+                if(args[1].toLowerCase().contains("http://") || args[1].toLowerCase().contains("https://") || args[1].toLowerCase().contains("www.")){
+                    event.getTextChannel().sendMessage(
+
+                            new EmbedBuilder()
+                                    .setTitle("**SORRY**")
+                                    .setDescription("Try to search track by name\n" + "Usage: `-!m play [track name]`")
+                                    .setColor(Color.RED)
+                                    .build()
+
+                    ).queue();
+                    return;
+                }
                 String identifier;
 
                 identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -298,7 +311,7 @@ public class Music implements Commands {
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
                                 .setColor(Color.GREEN)
-                                .setDescription("Now voice channel " + getManager(guild).getChannel().getName() + " **IS LOCKED**!")
+                                .setDescription("Now voice channel `" + getManager(guild).getChannel().getName() + "` **IS LOCKED**!")
                                 .build()
                 ).queue();
 
@@ -322,7 +335,7 @@ public class Music implements Commands {
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
                                 .setColor(Color.GREEN)
-                                .setDescription("Now voice channel " + getManager(guild).getChannel().getName() + " **IS UNLOCKED**!")
+                                .setDescription("Now voice channel `" + getManager(guild).getChannel().getName() + "` **IS UNLOCKED**!")
                                 .build()
                 ).queue();
 
@@ -335,8 +348,8 @@ public class Music implements Commands {
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
                                 .setColor(Color.YELLOW)
-                                .setDescription("Voice channel " + getManager(guild).getChannel().getName() + " **IS**"
-                                        + (getManager(guild).isVCHannLocked() == false ? " ** UN**" : " ") + "**LOCKED**")
+                                .setDescription("Voice channel `" + getManager(guild).getChannel().getName() + "` **IS**"
+                                        + (getManager(guild).isVCHannLocked() == false ? " ** NOT **" : " ") + "**LOCKED**")
                                 .build()
                 ).queue();
 
@@ -346,7 +359,7 @@ public class Music implements Commands {
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder().setTitle("Error!")
                             .setColor(Color.RED)
-                            .setDescription("Try tu use ``!m help``")
+                            .setDescription("Try tu use ``-!m help``")
                             .build()
                     ).queue();
         }
