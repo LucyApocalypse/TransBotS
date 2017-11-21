@@ -14,7 +14,7 @@ public class BotListener extends ListenerAdapter {
         if (event.getMessage().getAuthor().isBot()){
             return;
         }
-        if(event.getMessage().getContent().startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
+        if(event.getMessage().getContent().startsWith("-!") && event.getAuthor() != event.getJDA().getSelfUser()){
 
             String[] s = event.getMessage().getContent().split(" ");
             StringBuilder b = new StringBuilder();

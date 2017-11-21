@@ -52,7 +52,7 @@ public class VoteCommand implements Commands{
 
     @Override
     public EmbedBuilder help() {
-        return new EmbedBuilder().setTitle("**VOTE HELP**").addField("USAGE", "`!vote [content]`" +
+        return new EmbedBuilder().setTitle("**VOTE HELP**").addField("USAGE", "`-!vote [content]`" +
                 "\n For example, `!vote make a new voice chat?`", false);
     }
 

@@ -24,11 +24,11 @@ public class HelpCommand implements Commands {
     @Override
     public EmbedBuilder help() {
         return new EmbedBuilder().setTitle("**COMMAND HELP**")
-                .addField("Music", "Play music\nUsage: `!m(usic) [cmd / help]`", true)
-                .addField("Ping", "Just ping-pong\nUsage: `!ping`", true)
+                .addField("Music", "Play music\nUsage: `-!m(usic) [cmd / help]`", true)
+                .addField("Ping", "Just ping-pong\nUsage: `-!ping`", true)
                 .addBlankField(false)
-                .addField("Vote", "Make a vote\nUsage `!vote [content / --help]`", true)
-                .addField("Clear", "Delete messages\nUsage: `!clear [num]`", true)
+                .addField("Vote", "Make a vote\nUsage `-!vote [content / --help]`", true)
+                .addField("Clear", "Delete messages\nUsage: `-!clear [num]`", true)
                 .setColor(Color.YELLOW);
     }
 

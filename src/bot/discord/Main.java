@@ -20,7 +20,7 @@ public class Main {
         jdaBuilder.setToken(token);
         jdaBuilder.setAutoReconnect(true);
         jdaBuilder.setStatus(OnlineStatus.ONLINE);
-        jdaBuilder.setGame(Game.of("Use !help for help"));
+        jdaBuilder.setGame(Game.of("Use -!help for help"));
 
         try {
             BotListener botListener = new BotListener();
@@ -70,7 +70,7 @@ public class Main {
             cmd.event.getTextChannel().sendMessage(
                     new EmbedBuilder()
                             .setTitle("Error")
-                            .setDescription("Try to use: `!help`")
+                            .setDescription("Try to use: `-!help`")
                             .setColor(Color.RED)
                             .build()
             ).queue();

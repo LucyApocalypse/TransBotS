@@ -282,6 +282,8 @@ public class Music implements Commands {
 
             case "lock":
 
+                getPlayer(guild);
+
                 if(getManager(guild).getChannel() == null){
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder().setTitle("Error!")
@@ -304,6 +306,8 @@ public class Music implements Commands {
 
             case "unlock":
 
+                getPlayer(guild);
+
                 if(getManager(guild).getChannel() == null){
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder().setTitle("Error!")
@@ -325,6 +329,8 @@ public class Music implements Commands {
                 break;
 
             case "islocked":
+
+                getPlayer(guild);
 
                 event.getTextChannel().sendMessage(
                         new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
@@ -349,29 +355,29 @@ public class Music implements Commands {
     @Override
     public EmbedBuilder help() {
         EmbedBuilder builder = new EmbedBuilder().setTitle("**MUSIC HELP**");
-        builder.addField("Play", "Play track from source\nUsage: `!m p(lay) [source]`", true);
-        builder.addField("Stop", "Stop playing tracks \nUsage: `!m stop`", true);
+        builder.addField("Play", "Play track from source\nUsage: `-!m p(lay) [source]`", true);
+        builder.addField("Stop", "Stop playing tracks \nUsage: `-!m stop`", true);
         builder.addBlankField(false);
-        builder.addField("Pause", "Make pause \nUsage: `!m pause`", true);
-        builder.addField("Resume", "Continue playing \nUsage: `!m resume`", true);
+        builder.addField("Pause", "Make pause \nUsage: `-!m pause`", true);
+        builder.addField("Resume", "Continue playing \nUsage: `-!m resume`", true);
         builder.addBlankField(false);
-        builder.addField("Skip", "Skip this track \nUsage: `!m skip`", true);
-        builder.addField("Next", "Skip this track\nand add to the queue and\n if `repeat` is `true`\nUsage: `!m next`", true);
+        builder.addField("Skip", "Skip this track \nUsage: `-!m skip`", true);
+        builder.addField("Next", "Skip this track\nand add to the queue and\n if `repeat` is `true`\nUsage: `-!m next`", true);
         builder.addBlankField(false);
-        builder.addField("NP (NOW / INFO)", "Info about now playing track \nUsage: `!m np (now, info)`", true);
-        builder.addField("Queue (List)", "Tracks queue \nUsage: `!m queue (list)`", true);
+        builder.addField("NP (NOW / INFO)", "Info about now playing track \nUsage: `-!m np (now, info)`", true);
+        builder.addField("Queue (List)", "Tracks queue \nUsage: `-!m queue (list)`", true);
         builder.addBlankField(false);
-        builder.addField("Repeat", "Turn on / off track repeat \nUsage: `!m r(epeat)`", true);
-        builder.addField("Shuffle", "Shuffle tracks queue \nUsage: `!m shuffle`", true);
+        builder.addField("Repeat", "Turn on / off track repeat \nUsage: `-!m r(epeat)`", true);
+        builder.addField("Shuffle", "Shuffle tracks queue \nUsage: `-!m shuffle`", true);
         builder.addBlankField(false);
-        builder.addField("Volume", "Set Bot volume\nUsage: `!m volume [0-100]`", true);
-        builder.addField("Volume", "Get Bot volume\nUsage: `!m volume`", true);
+        builder.addField("Volume", "Set Bot volume\nUsage: `-!m volume [0-100]`", true);
+        builder.addField("Volume", "Get Bot volume\nUsage: `-!m volume`", true);
         builder.addBlankField(false);
-        builder.addField("Lock", "Set Voice Channel Locked\nUsage: `!m lock]`", true);
-        builder.addField("Unlock", "Set Voice Channel Unlocked\nUsage: `!m unlock`", true);
+        builder.addField("Lock", "Set Voice Channel Locked\nUsage: `-!m lock`", true);
+        builder.addField("Unlock", "Set Voice Channel Unlocked\nUsage: `-!m unlock`", true);
         builder.addBlankField(false);
-        builder.addField("Is locked?", "Is voice channel locked?\nUsage: `!m islocked`", true);
-        builder.addField("Help", "Get help (about music command [**not ready yet**])\nUsage: `!m help (command)`", true);
+        builder.addField("Is locked?", "Is voice channel locked?\nUsage: `-!m islocked`", true);
+        builder.addField("Help", "Get help (about music command [**not ready yet**])\nUsage: `-!m help (command)`", true);
         builder.setColor(Color.YELLOW);
         return builder;
     }

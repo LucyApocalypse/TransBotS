@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class CommandParser {
     public CommandContainer parse(String rw, MessageReceivedEvent event){
             ArrayList<String> split  = new ArrayList<>();
-            String beheaded = rw.replaceFirst("!", "");
+            String beheaded = rw.replaceFirst("-!", "");
             String[] splitbeheaded  = beheaded.split(" ");
             String[] splitbeheaded1 = new String[splitbeheaded.length];
             String m;
