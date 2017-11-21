@@ -1,58 +1,26 @@
 package bot.discord;
 
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
-import java.util.List;
 
 public class BotListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
 
-        if(event.getMessage().getEmbeds().size() != 0){
-            List<MessageEmbed> messageEmbed = event.getMessage().getEmbeds();
-
-            if (messageEmbed.get(0).getTitle() == null || !event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())){
-                return;
-            }
-
-            if(messageEmbed.get(0).getTitle().contains("VOTE") && event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())){
-                //Guild guild = event.getGuild();
-                // List<Emote> emotes =
-
-                /*for(Emote e : emotes){
-                    System.out.println(e.getName() + "   " + e.getId());
-                }*/
-            }
-            return;
-        }
-
-        String e = event.getMessage().getContent();
-        StringBuilder builder = new StringBuilder();
-        String[] es = e.split(" ");
-        for (String s : es){
-            if(s.toLowerCase().startsWith("http://")){
-                s = s.substring(7);
-            } else if(s.toLowerCase().startsWith("https://")){
-                s = s.substring(8);
-            }
-            builder.append(s);
-            builder.append(" ");
-        }
-        e = builder.toString().trim();
-
         if (event.getMessage().getAuthor().isBot()){
             return;
         }
-        if(e.startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
+        if(event.getMessage().getContent().startsWith("!") && event.getAuthor() != event.getJDA().getSelfUser()){
+
+            String[] s = event.getMessage().getContent().split(" ");
+            StringBuilder b = new StringBuilder();
+
             try {
-                Main.handleCommand(Main.parser.parse(e, event));
+                Main.handleCommand(Main.parser.parse(event.getMessage().getContent(), event));
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

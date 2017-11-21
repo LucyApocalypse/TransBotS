@@ -160,6 +160,7 @@ public class Music implements Commands {
 
                             new EmbedBuilder().setTitle("**Info**")
                                     .addField("Volume", "*" + String.valueOf(getPlayer(guild).getVolume()) + "*", false)
+                                    .setColor(Color.YELLOW)
                                     .build()
 
                     ).queue();
@@ -186,12 +187,7 @@ public class Music implements Commands {
                 }
                 String identifier;
 
-                try {
-                    new URL(args[1]);
-                    identifier = args[1];
-                } catch(MalformedURLException e) {
-                        identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-                }
+                identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
                 loadTrack(identifier, event.getMember());
                 break;

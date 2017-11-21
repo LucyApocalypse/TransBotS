@@ -1,12 +1,10 @@
 package bot.discord;
 
 import bot.discord.Commands.*;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -68,6 +66,14 @@ public class Main {
             } else {
                 commandsHashMap.get(cmd.invoke).execute(safe, cmd.event);
             }
+        }else {
+            cmd.event.getTextChannel().sendMessage(
+                    new EmbedBuilder()
+                            .setTitle("Error")
+                            .setDescription("Try to use: `!help`")
+                            .setColor(Color.RED)
+                            .build()
+            ).queue();
         }
     }
 }

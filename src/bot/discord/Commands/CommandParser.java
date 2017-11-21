@@ -18,7 +18,7 @@ public class CommandParser {
                     m = m.substring(8);
                     if(!m.startsWith("www."))
                         m = "www." + m;
-                } if(m.startsWith("http://")){
+                }else if(m.startsWith("http://")){
                     m = m.substring(7);
                     if(!m.startsWith("www."))
                         m = "www." + m;
