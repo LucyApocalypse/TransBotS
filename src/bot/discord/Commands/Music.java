@@ -15,9 +15,7 @@ import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceMan
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import com.sedmelluq.discord.lavaplayer.track.*;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -35,10 +33,10 @@ public class Music implements Commands {
     private static Guild guild;
     private static final AudioPlayerManager MANAGER = new DefaultAudioPlayerManager();
     private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS = new HashMap<>();
-
+    private YoutubeAudioSourceManager audioSourceManager = new YoutubeAudioSourceManager(true);
 
     public Music() {
-        MANAGER.registerSourceManager(new YoutubeAudioSourceManager(true));
+        MANAGER.registerSourceManager(audioSourceManager);
         MANAGER.registerSourceManager(new SoundCloudAudioSourceManager(true));
         MANAGER.registerSourceManager(new BandcampAudioSourceManager());
         MANAGER.registerSourceManager(new VimeoAudioSourceManager());
@@ -196,9 +194,8 @@ public class Music implements Commands {
                     ).queue();
                     return;
                 }
-                String identifier;
-
-                identifier = "ytsearch: " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                String identifier = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                identifier = "ytsearch: " + identifier;
 
                 loadTrack(identifier, event.getMember());
 

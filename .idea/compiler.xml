@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TransBot" target="9" />
+      <module name="TransBot" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,6 +1,7 @@
 package bot.discord;
 
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
@@ -12,7 +13,14 @@ public class BotListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
 
         if (event.getMessage().getAuthor().isBot()){
-            return;
+
+            if(!event.getAuthor().equals(event.getJDA().getSelfUser()) || !(event.getMessage().getEmbeds().size() > 0))
+                return;
+
+            if(!event.getMessage().getEmbeds().get(0).getTitle().equalsIgnoreCase("vote"))
+                return;
+            event.getMessage().addReaction("❎").queue();
+            event.getMessage().addReaction("✅").queue();
         }
         if(event.getMessage().getContent().startsWith("-!") && event.getAuthor() != event.getJDA().getSelfUser()){
 

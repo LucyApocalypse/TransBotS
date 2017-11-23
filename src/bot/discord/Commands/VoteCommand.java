@@ -21,6 +21,7 @@ public class VoteCommand implements Commands{
     public void action(String[] args, MessageReceivedEvent event) throws InterruptedException {
         if(args.length == 0){
             event.getTextChannel().sendMessage(help().build()).queue();
+            return;
         }
 
         if(args[0].equalsIgnoreCase("--help")){
