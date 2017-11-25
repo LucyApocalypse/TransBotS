@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
     public static JDA jda;
-    public static HashMap<String, Commands> commandsHashMap = new HashMap<>();
+    public static HashMap<String, Commands> commandsHashMap = new HashMap<String, Commands>();
     static final CommandParser parser = new CommandParser();
 
     private static void _init(String token){

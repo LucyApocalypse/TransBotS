@@ -73,8 +73,8 @@ public class Music implements Commands {
     private boolean isIdle(Guild g) {
         return !hasPlayer(g) || getPlayer(g).getPlayingTrack() == null;
     }
-    public void loadTrack(String identifier, Member author) {
-        Guild guild = author.getGuild();
+    public void loadTrack(String identifier, final Member author) {
+        final Guild guild = author.getGuild();
         getPlayer(guild);
         MANAGER.setFrameBufferDuration(5000);
         MANAGER.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
@@ -187,7 +187,7 @@ public class Music implements Commands {
 
                             new EmbedBuilder()
                                     .setTitle("**SORRY**")
-                                    .setDescription("Try to search track by name\n" + "Usage: `-!m play [track name]`")
+                                    .setDescription("Try to search track by name\n" + "Usage: `-!m p(lay) [track name]`")
                                     .setColor(Color.RED)
                                     .build()
 
@@ -218,6 +218,63 @@ public class Music implements Commands {
                             .addField("Author", info1.author, false)
                             .addField("Duration", getTimestamp(info1.length), false)
                             .build()
+
+                ).queue();
+
+                break;
+            case "splay":
+            case "sp":
+                List<VoiceChannel> schannels = event.getJDA().getVoiceChannels();
+                Set<Member> smembers = new HashSet<>();
+                for (VoiceChannel channel : schannels){
+                    smembers.addAll(channel.getMembers());
+                }
+                if(!smembers.contains(event.getMember())){
+                    event.getTextChannel().sendMessage("I'm sorry, " + event.getMember().getAsMention()
+                            + ", but you need enter to voice chanel!").queue();
+                    return;
+                }
+                if (args.length < 2) {
+                    sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
+                    return;
+                }
+
+                if(args[1].toLowerCase().contains("http://") || args[1].toLowerCase().contains("https://") || args[1].toLowerCase().contains("www.")){
+                    event.getTextChannel().sendMessage(
+
+                            new EmbedBuilder()
+                                    .setTitle("**SORRY**")
+                                    .setDescription("Try to search track by name\n" + "Usage: `-!m sp(lay) [track name]`")
+                                    .setColor(Color.RED)
+                                    .build()
+
+                    ).queue();
+                    return;
+                }
+                String sidentifier = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                identifier = "scsearch: " + sidentifier;
+
+                loadTrack(identifier, event.getMember());
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                AudioInfo saudioInfo1 = getManager(guild).getQueue().get(getManager(guild).getQueue().size() - 1);
+                AudioTrackInfo sinfo1 = saudioInfo1.getTrack().getInfo();
+
+                event.getTextChannel().sendMessage(
+
+                        new EmbedBuilder()
+                                .setColor(Color.YELLOW)
+                                .setTitle("**NEW TRACK**")
+                                .setDescription("New track added")
+                                .addField("Track", sinfo1.title, false)
+                                .addField("Author", sinfo1.author, false)
+                                .addField("Duration", getTimestamp(sinfo1.length), false)
+                                .build()
 
                 ).queue();
 
