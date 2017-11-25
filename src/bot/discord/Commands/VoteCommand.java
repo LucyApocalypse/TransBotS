@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.awt.*;
-import java.util.List;
 
 public class VoteCommand implements Commands{
     @Override

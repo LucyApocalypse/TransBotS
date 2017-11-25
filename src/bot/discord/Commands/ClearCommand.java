@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class ClearCommand implements Commands {
 
-    EmbedBuilder error = new EmbedBuilder().setColor(Color.RED).setTitle("Error");
+    private EmbedBuilder error = new EmbedBuilder().setColor(Color.RED).setTitle("Error");
 
     private int getInt(String n, MessageReceivedEvent event){
         try {

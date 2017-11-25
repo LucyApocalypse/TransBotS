@@ -8,13 +8,11 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
     private final Deque<AudioInfo> queue;
-    private  AudioInfo lastTrack;
     private boolean isRepeatable = false;
     private VoiceChannel n;
     private boolean lockVchan = false;
@@ -31,20 +29,12 @@ public class TrackManager extends AudioEventAdapter {
         this.lockVchan = lock;
     }
 
-    public AudioPlayer getPLAYER() {
-        return PLAYER;
-    }
-
     public boolean isRepeatable() {
         return isRepeatable;
     }
 
     public void setRepeatable() {
-        if(queue.size() >= 2) {
-            isRepeatable = !isRepeatable;
-        } else {
-            isRepeatable = false;
-        }
+        isRepeatable = queue.size() >= 2 && !isRepeatable;
     }
 
     public TrackManager(AudioPlayer player) {

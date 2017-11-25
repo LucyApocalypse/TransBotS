@@ -1,7 +1,6 @@
 package bot.discord;
 
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
@@ -12,10 +11,6 @@ public class BotListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if(event.getMessage().getContent().startsWith("-!") && event.getAuthor() != event.getJDA().getSelfUser()){
-
-            String[] s = event.getMessage().getContent().split(" ");
-            StringBuilder b = new StringBuilder();
-
             try {
                 Main.handleCommand(Main.parser.parse(event.getMessage().getContent(), event));
             } catch (InterruptedException ex) {

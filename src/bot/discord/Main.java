@@ -2,7 +2,7 @@ package bot.discord;
 
 import bot.discord.Commands.*;
 import net.dv8tion.jda.core.*;
-import net.dv8tion.jda.core.entities.Game;;
+import net.dv8tion.jda.core.entities.Game;
 
 import java.awt.*;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
     public static JDA jda;
-    public static HashMap<String, Commands> commandsHashMap = new HashMap<String, Commands>();
+    private static HashMap<String, Commands> commandsHashMap = new HashMap<>();
     static final CommandParser parser = new CommandParser();
 
     private static void _init(String token){
@@ -53,7 +53,6 @@ public class Main {
             _initCommands();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return;
         }
 
     }
@@ -64,9 +63,9 @@ public class Main {
 
             if(safe){
                 commandsHashMap.get(cmd.invoke).action(cmd.args, cmd.event);
-                commandsHashMap.get(cmd.invoke).execute(safe, cmd.event);
+                commandsHashMap.get(cmd.invoke).execute(true, cmd.event);
             } else {
-                commandsHashMap.get(cmd.invoke).execute(safe, cmd.event);
+                commandsHashMap.get(cmd.invoke).execute(false, cmd.event);
             }
         }else {
             cmd.event.getTextChannel().sendMessage(
