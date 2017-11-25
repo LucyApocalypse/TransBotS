@@ -33,9 +33,9 @@ public class Music implements Commands {
     private static Guild guild;
     private static final AudioPlayerManager MANAGER = new DefaultAudioPlayerManager();
     private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS = new HashMap<>();
-    private YoutubeAudioSourceManager audioSourceManager = new YoutubeAudioSourceManager(true);
 
     public Music() {
+        YoutubeAudioSourceManager audioSourceManager = new YoutubeAudioSourceManager(true);
         MANAGER.registerSourceManager(audioSourceManager);
         MANAGER.registerSourceManager(new SoundCloudAudioSourceManager(true));
         MANAGER.registerSourceManager(new BandcampAudioSourceManager());
@@ -73,7 +73,7 @@ public class Music implements Commands {
     private boolean isIdle(Guild g) {
         return !hasPlayer(g) || getPlayer(g).getPlayingTrack() == null;
     }
-    public void loadTrack(String identifier, final Member author) {
+    private void loadTrack(String identifier, final Member author) {
         final Guild guild = author.getGuild();
         getPlayer(guild);
         MANAGER.setFrameBufferDuration(5000);
@@ -105,7 +105,7 @@ public class Music implements Commands {
         }
 
     }
-    public String getTimestamp(long milis) {
+    private String getTimestamp(long milis) {
         long seconds = milis / 1000;
         long hours = Math.floorDiv(seconds, 3600);
         seconds = seconds - (hours * 3600);
@@ -431,7 +431,7 @@ public class Music implements Commands {
                         new EmbedBuilder().setTitle("**VOICE CHANNEL LOCK**")
                                 .setColor(Color.YELLOW)
                                 .setDescription("Voice channel `" + getManager(guild).getChannel().getName() + "` **IS**"
-                                        + (getManager(guild).isVCHannLocked() == false ? " ** NOT **" : " ") + "**LOCKED**")
+                                        + (!getManager(guild).isVCHannLocked() ? " ** NOT **" : " ") + "**LOCKED**")
                                 .build()
                 ).queue();
 
