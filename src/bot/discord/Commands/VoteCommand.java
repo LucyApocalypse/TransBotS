@@ -38,9 +38,8 @@ public class VoteCommand implements Commands{
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder
                 .setColor(Color.ORANGE)
-                .setTitle("VOTE")
-                .addField("Author", event.getMessage().getAuthor().getName(), false)
-                .addField("Content", builder.toString().trim(), false);
+                .setTitle("**VOTE** by **" + event.getMessage().getAuthor().getName() + "**")
+                .addField("**Content**", builder.toString().trim(), false);
 
         Message message = new MessageBuilder().setEmbed(embedBuilder.build()).build();
         message = event.getTextChannel().sendMessage(message).complete();
