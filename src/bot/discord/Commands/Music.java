@@ -213,7 +213,7 @@ public class Music implements Commands {
                         new EmbedBuilder()
                             .setColor(Color.YELLOW)
                             .setTitle("**NEW TRACK**")
-                            .setDescription("New track added")
+                            .setDescription("New track added from **YouTube**")
                             .addField("Track", info1.title, false)
                             .addField("Author", info1.author, false)
                             .addField("Duration", getTimestamp(info1.length), false)
@@ -270,7 +270,7 @@ public class Music implements Commands {
                         new EmbedBuilder()
                                 .setColor(Color.YELLOW)
                                 .setTitle("**NEW TRACK**")
-                                .setDescription("New track added")
+                                .setDescription("New track added from **SoundCloud**")
                                 .addField("Track", sinfo1.title, false)
                                 .addField("Author", sinfo1.author, false)
                                 .addField("Duration", getTimestamp(sinfo1.length), false)
@@ -450,7 +450,7 @@ public class Music implements Commands {
     @Override
     public EmbedBuilder help() {
         EmbedBuilder builder = new EmbedBuilder().setTitle("**MUSIC HELP**");
-        builder.addField("Play", "Play track from source\nUsage: `-!m p(lay) [source]`", true);
+        builder.addField("Play", "Play track from YouTube or SoundCloud\nUsage **YT**: `-!m p(lay) [track name]`\nUsage **SC**: `-!m sp(lay) [track name]`", true);
         builder.addField("Stop", "Stop playing tracks \nUsage: `-!m stop`", true);
         builder.addBlankField(false);
         builder.addField("Pause", "Make pause \nUsage: `-!m pause`", true);
