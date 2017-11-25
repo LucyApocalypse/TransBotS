@@ -43,9 +43,9 @@ public class VoteCommand implements Commands{
                 .addField("Content", builder.toString().trim(), false);
 
         Message message = new MessageBuilder().setEmbed(embedBuilder.build()).build();
-        event.getTextChannel().sendMessage(message).queue();
-
-        List<Message> m = event.getTextChannel().getHistory().retrievePast(5).complete();
+        message = event.getTextChannel().sendMessage(message).complete();
+        message.addReaction("❌").queue();
+        message.addReaction("✔").queue();
 
 
 

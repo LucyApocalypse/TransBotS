@@ -11,17 +11,6 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
-        if (event.getMessage().getAuthor().isBot()){
-
-            if(!event.getAuthor().equals(event.getJDA().getSelfUser()) || !(event.getMessage().getEmbeds().size() > 0))
-                return;
-
-            if(!event.getMessage().getEmbeds().get(0).getTitle().equalsIgnoreCase("vote"))
-                return;
-            event.getMessage().addReaction("❎").queue();
-            event.getMessage().addReaction("✅").queue();
-        }
         if(event.getMessage().getContent().startsWith("-!") && event.getAuthor() != event.getJDA().getSelfUser()){
 
             String[] s = event.getMessage().getContent().split(" ");

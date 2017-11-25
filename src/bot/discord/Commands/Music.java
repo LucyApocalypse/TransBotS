@@ -420,6 +420,11 @@ public class Music implements Commands {
 
             case "islocked":
 
+                if(getManager(guild).getChannel() == null){
+                    event.getTextChannel().sendMessage("❌ I am NOT CONNECTED to voice channel").queue();
+                    return;
+                }
+
                 getPlayer(guild);
 
                 event.getTextChannel().sendMessage(
