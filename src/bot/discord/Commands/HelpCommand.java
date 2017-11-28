@@ -18,7 +18,8 @@ public class HelpCommand implements Commands {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws InterruptedException {
-        event.getTextChannel().sendMessage(help().build()).queue();
+        event.getAuthor().openPrivateChannel().complete().sendMessage(help().build()).queue();
+        event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + ", open your PM, please!").queue();
     }
 
     @Override

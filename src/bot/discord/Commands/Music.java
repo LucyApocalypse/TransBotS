@@ -365,8 +365,11 @@ public class Music implements Commands {
                 ).queue();
                 break;
             case "help":
+
+                event.getAuthor().openPrivateChannel().complete().sendMessage(help().build()).queue();
+
                 event.getTextChannel().sendMessage(
-                        help().build()
+                        event.getAuthor().getAsMention() + ", open your PM, please!"
                 ).queue();
                 break;
 

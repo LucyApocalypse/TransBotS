@@ -1,10 +1,12 @@
 package bot.discord;
 
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.requests.RestAction;
 
 public class BotListener extends ListenerAdapter {
 
@@ -43,6 +45,6 @@ public class BotListener extends ListenerAdapter {
             System.out.print("*");
         }
         System.out.println();
-
+        event.getMessage().getAuthor().openPrivateChannel().complete().sendMessage("Sorry! I can't answer you!");
     }
 }
