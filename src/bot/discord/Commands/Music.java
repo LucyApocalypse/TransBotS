@@ -186,7 +186,7 @@ public class Music implements Commands {
                     event.getTextChannel().sendMessage(
 
                             new EmbedBuilder()
-                                    .setTitle("**SORRY**")
+                                    .setTitle("❌ **SORRY** ❌")
                                     .setDescription("Try to search track by name\n" + "Usage: `-!m p(lay) [track name]`")
                                     .setColor(Color.RED)
                                     .build()
@@ -212,7 +212,7 @@ public class Music implements Commands {
 
                         new EmbedBuilder()
                             .setColor(Color.YELLOW)
-                            .setTitle("**NEW TRACK**")
+                            .setTitle("✔ **NEW TRACK**")
                             .setDescription("New track added from **YouTube**")
                             .addField("Track", info1.title, false)
                             .addField("Author", info1.author, false)
@@ -230,12 +230,12 @@ public class Music implements Commands {
                     smembers.addAll(channel.getMembers());
                 }
                 if(!smembers.contains(event.getMember())){
-                    event.getTextChannel().sendMessage("I'm sorry, " + event.getMember().getAsMention()
+                    event.getTextChannel().sendMessage("❌ I'm sorry, " + event.getMember().getAsMention()
                             + ", but you need enter to voice chanel!").queue();
                     return;
                 }
                 if (args.length < 2) {
-                    sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("Invalid source"));
+                    sendErrorMsg(event, new EmbedBuilder().setColor(Color.RED).setDescription("❌ Invalid source"));
                     return;
                 }
 
@@ -243,7 +243,7 @@ public class Music implements Commands {
                     event.getTextChannel().sendMessage(
 
                             new EmbedBuilder()
-                                    .setTitle("**SORRY**")
+                                    .setTitle("❌ **SORRY** ❌")
                                     .setDescription("Try to search track by name\n" + "Usage: `-!m sp(lay) [track name]`")
                                     .setColor(Color.RED)
                                     .build()
@@ -269,7 +269,7 @@ public class Music implements Commands {
 
                         new EmbedBuilder()
                                 .setColor(Color.YELLOW)
-                                .setTitle("**NEW TRACK**")
+                                .setTitle("✔ **NEW TRACK**")
                                 .setDescription("New track added from **SoundCloud**")
                                 .addField("Track", sinfo1.title, false)
                                 .addField("Author", sinfo1.author, false)
