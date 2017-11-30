@@ -20,7 +20,7 @@ public class Main {
         jdaBuilder.setToken(token);
         jdaBuilder.setAutoReconnect(true);
         jdaBuilder.setStatus(OnlineStatus.ONLINE);
-        jdaBuilder.setGame(Game.of(Game.GameType.STREAMING,"Use -!help for help", "https://vk.com/antich4t"));
+        jdaBuilder.setGame(Game.of(Game.GameType.STREAMING,"-!help (v. 0.1b)", "https://vk.com/antich4t"));
 
         try {
             BotListener botListener = new BotListener();
