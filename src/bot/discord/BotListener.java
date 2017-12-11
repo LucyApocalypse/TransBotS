@@ -1,12 +1,11 @@
 package bot.discord;
 
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.requests.RestAction;
 
 public class BotListener extends ListenerAdapter {
 
@@ -23,13 +22,10 @@ public class BotListener extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        StringBuilder out = new StringBuilder("\nThis bot is running on following servers :\n");
-        int i = 1;
-        for(Guild g :  event.getJDA().getGuilds()){
-            out.append(i++).append(")\t").append(g.getName()).append("(").append(g.getId()).append(") \n");
-            g.getTextChannels().get(0).sendMessage("Hello").queue();
+        Guild[] guilds = event.getJDA().getGuilds().toArray(new Guild[0]);
+        for(Guild g : guilds) {
+            System.out.println("Server " + g.getName() + " ( " + g.getRegion() + " ) ");
         }
-        System.out.println(out);
     }
 
     @Override
@@ -47,4 +43,6 @@ public class BotListener extends ListenerAdapter {
         System.out.println();
         event.getMessage().getAuthor().openPrivateChannel().complete().sendMessage("Sorry! I can't answer you!");
     }
+
+
 }

@@ -23,6 +23,8 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,8 +37,7 @@ public class Music implements Commands {
     private static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS = new HashMap<>();
 
     public Music() {
-        YoutubeAudioSourceManager audioSourceManager = new YoutubeAudioSourceManager(true);
-        MANAGER.registerSourceManager(audioSourceManager);
+        MANAGER.registerSourceManager(new YoutubeAudioSourceManager(true));
         MANAGER.registerSourceManager(new SoundCloudAudioSourceManager(true));
         MANAGER.registerSourceManager(new BandcampAudioSourceManager());
         MANAGER.registerSourceManager(new VimeoAudioSourceManager());
@@ -182,7 +183,7 @@ public class Music implements Commands {
                     return;
                 }
 
-                if(args[1].toLowerCase().contains("http://") || args[1].toLowerCase().contains("https://") || args[1].toLowerCase().contains("www.")){
+                /*if(args[1].toLowerCase().contains("http://") || args[1].toLowerCase().contains("https://") || args[1].toLowerCase().contains("www.")){
                     event.getTextChannel().sendMessage(
 
                             new EmbedBuilder()
@@ -193,11 +194,16 @@ public class Music implements Commands {
 
                     ).queue();
                     return;
-                }
-                String identifier = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-                identifier = "ytsearch: " + identifier;
+                }*/
 
-                loadTrack(identifier, event.getMember());
+                String identifier = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                try {
+                    new URI(identifier);
+                    loadTrack(new URI(identifier).toString(), event.getMember());
+                } catch (URISyntaxException e) {
+                    identifier = "ytsearch: " + identifier;
+                    loadTrack(identifier, event.getMember());
+                }
 
                 try {
                     Thread.sleep(2000);
@@ -251,10 +257,14 @@ public class Music implements Commands {
                     ).queue();
                     return;
                 }
-                String sidentifier = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-                identifier = "scsearch: " + sidentifier;
-
-                loadTrack(identifier, event.getMember());
+                String identifier1 = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                try {
+                    new URI(identifier1);
+                    loadTrack(new URI(identifier1).toString(), event.getMember());
+                } catch (URISyntaxException e) {
+                    identifier1 = "scsearch: " + identifier1;
+                    loadTrack(identifier1, event.getMember());
+                }
 
                 try {
                     Thread.sleep(2000);
